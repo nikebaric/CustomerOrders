@@ -123,6 +123,6 @@ In case of successful entry it prints a message in the console
 Updates order with id 83e0fdc2-cc75-4536-ba49-1b2366460eae in table orders with the given data. totalAmount must be greater than 0. Status from NEW can only be changed from NEW to IN_PROGRESS or from NEW to COMPLETED.
 Status from IN_PROGRESS can only be changed to COMPLETED. In case of wrong status or totalAmount it prints an error in the console. In case of a successful update it prints a message in the console.
 
-9) localhost:8080/api/orders/83e0fdc2-cc75-4536-ba49-1b2366460eae
+9) DELETE localhost:8080/api/orders/83e0fdc2-cc75-4536-ba49-1b2366460eae
 Deletes the order with id 83e0fdc2-cc75-4536-ba49-1b2366460eae from the orders table. In case of successful deletion it prints a message in the console. In case of deleting an order with a non-existent id it will print an error in the console.
  
