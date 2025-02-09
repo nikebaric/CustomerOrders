@@ -1,0 +1,405 @@
+openapi: 3.0.1
+info:
+  title: Customer Orders API
+  description: API for managing customers and orders
+  version: 1.0.0
+paths:
+  /api/customers:
+    get:
+      summary: Get all customers
+      description: Retrieve a list of all customers
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A list of customers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      summary: Create a new customer
+      description: Create a new customer in the system
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Customer to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: Customer created successfully
+        '400':
+          description: Bad request
+  /api/customers/{id}:
+    get:
+      summary: Get customer by ID
+      description: Retrieve a customer by their unique ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The customer ID
+          schema:
+            type: string
+            format: uuid
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+    put:
+      summary: Update customer details
+      description: Update an existing customer by their unique ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The customer ID
+          schema:
+            type: string
+            format: uuid
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Customer details to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '200':
+          description: Customer updated successfully
+        '400':
+          description: Bad request
+        '404':
+          description: Customer not found
+    delete:
+      summary: Delete a customer
+      description: Delete a customer by their unique ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The customer ID
+          schema:
+            type: string
+            format: uuid
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Customer deleted successfully
+        '404':
+          description: Customer not found
+
+  /api/orders:
+    get:
+      summary: Get all orders
+      description: Retrieve a list of all orders
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A list of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+    post:
+      summary: Create a new order
+      description: Create a new order in the system
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Order to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '201':
+          description: Order created successfully
+        '400':
+          description: Bad request
+  /api/orders/{id}:
+    get:
+      summary: Get order by ID
+      description: Retrieve an order by its unique ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The order ID
+          schema:
+            type: string
+            format: uuid
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: An order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '404':
+          description: Order not found
+    put:
+      summary: Update order details
+      description: Update an existing order by its unique ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The order ID
+          schema:
+            type: string
+            format: uuid
+      security:
+        - BearerAuth: []
+      requestBody:
+        description: Order details to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: Order updated successfully
+        '400':
+          description: Bad request
+        '404':
+          description: Order not found
+    delete:
+      summary: Delete an order
+      description: Delete an order by its unique ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The order ID
+          schema:
+            type: string
+            format: uuid
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Order deleted successfully
+        '404':
+          description: Order not found
+
+  /api/orders/customer/{customerId}:
+    get:
+      summary: Get orders by customer ID
+      description: Retrieve all orders placed by a specific customer
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: The customer ID
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          required: false
+          description: Page number
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          required: false
+          description: Page size
+          schema:
+            type: integer
+            default: 10
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A list of orders for the specified customer
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+  /api/orders/filter/orderDate:
+    get:
+      summary: Get orders by order date
+      description: Retrieve orders filtered by the order date with pagination
+      parameters:
+        - name: orderDate
+          in: query
+          required: true
+          description: The order date to filter by
+          schema:
+            type: string
+            format: date
+        - name: page
+          in: query
+          required: false
+          description: Page number
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          required: false
+          description: Page size
+          schema:
+            type: integer
+            default: 10
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A list of orders filtered by order date
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+  /api/orders/filter/status:
+    get:
+      summary: Get orders by status
+      description: Retrieve orders filtered by status with pagination
+      parameters:
+        - name: status
+          in: query
+          required: true
+          description: The status to filter by
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          description: Page number
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          required: false
+          description: Page size
+          schema:
+            type: integer
+            default: 10
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A list of orders filtered by status
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+  /api/orders/page:
+    get:
+      summary: Get paginated orders
+      description: Retrieve orders with pagination (without filters)
+      parameters:
+        - name: page
+          in: query
+          required: true
+          description: Page number
+          schema:
+            type: integer
+        - name: size
+          in: query
+          required: true
+          description: Page size
+          schema:
+            type: integer
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: A paginated list of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - email
+        - createdAt
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        customerId:
+          type: string
+          format: uuid
+        orderDate:
+          type: string
+          format: date-time
+        totalAmount:
+          type: number
+          format: float
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - customerId
+        - orderDate
+        - totalAmount
+        - status
+        - createdAt

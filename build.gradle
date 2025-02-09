@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.2'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.openapi.generator' version '7.11.0'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '23'
+targetCompatibility = '23'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+
+    implementation 'org.postgresql:postgresql'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+openApiGenerate {
+    generatorName = "javascript"
+    inputSpec = "src/main/resources/openapi.yaml"
+    outputDir = "$buildDir/generated-client"
+    apiPackage = "com.example.customerorders.api"
+    modelPackage = "com.example.customerorders.model"
+    invokerPackage = "com.example.customerorders.invoker"
+    configOptions = [
+            dateLibrary: "java8"
+    ]
+}
+
